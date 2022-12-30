@@ -7,9 +7,12 @@ dotenv.config({ path: "./confling.env" });
 const db = process.env.database;
 const user = require("./model/userschema");
 const Hotel=require("./model/Hotel");
+const User = require("./model/userschema");
+const HBooking = require("./model/HBooking");
 
 //mongodb+srv://kartik:kr020902@cluster0.dzxfhzt.mongodb.net/?retryWrites=true&w=majority
-
+//mongodb://localhost:27017/etrip
+//mongodb+srv://kr:kr020902@cluster0.ivdulfu.mongodb.net/user_master?retryWrites=true&w=majority
 
 mongoose.connect(db).then(() => { console.log("connected"); }).catch((e) => { console.log("fail"); });
 app.use(express.json());
@@ -18,7 +21,7 @@ app.use("/", require("./router/auth"));
 //app.use("/api/password-reset", password);
 const middleware = (req, res, next) => {
 
-}
+} 
 
 middleware();
 app.get("/", (req, res) => {
@@ -42,6 +45,13 @@ app.get("/Alogin", (req, res) => {
 app.post("/signup", (req, res) => {
     res.send("hello word")
 });
+
+
+
+
+
+
+
 
 //hotel create
 app.post("/addhotel",async (req,res)=>{
@@ -71,6 +81,12 @@ app.get("/hotels",async(req,res)=>{
         res.send({result:"no hotel"})
     }
 })
+// romm
+app.post("/photels/:id",async(req,res)=>{
+    const hotels=await Hotel.findOne({_id:req.params.id});
+    res.send(hotels);
+    
+})
 //delete hotel
 app.delete("/dhotel/:id",async(req,res)=>{
     let result=await Hotel.deleteOne({_id:req.params.id});
@@ -93,6 +109,54 @@ app.put("/uphotel/:id",async(req,res)=>{
         {$set:req.body}
     )
     res.send(result);
+})
+
+//hbooking
+app.post("/hbook",async (req,res)=>{
+
+        let hbooking=new HBooking(req.body);
+        let result=await hbooking.save();
+        res.send(result);
+})
+
+
+
+// user list
+app.get("/users", async(req,res)=>{
+    const users=await User.find();
+    if(users.length>0){
+        res.send(users);
+    }else{
+        res.send({result:"no hotel"})
+    }
+})
+// user serch
+app.get("/userch/:key",async(req,res)=>{
+    let result=await User.find({
+        "$or":[
+            {
+                name:{$regex:req.params.key}
+            }
+        ]
+    });
+    res.send(result);
+})
+
+app.get("/userchs/:key",async(req,res)=>{
+    let result=await User.find({
+        "$or":[
+            {
+                email:{$regex:req.params.key}
+            }
+        ]
+    });
+    res.send(result);
+})
+
+// delet users
+app.delete("/duser/:id",async(req,res)=>{
+    let result=await User.deleteOne({_id:req.params.id});
+    res.send(result)
 })
 
 

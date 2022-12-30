@@ -56,7 +56,10 @@ const Signup = () => {
         window.alert("invalid registered");
 
       } else {
+       
         window.alert("successful");
+        setuser("")
+        
         //  history("/login");
       }
     }

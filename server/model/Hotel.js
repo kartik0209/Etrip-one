@@ -18,39 +18,57 @@ const HotelSchema = new mongoose.Schema({
         type: Number,
         //required: true
     },
+    Hurl1: {
+        type: String
+    },
+     Hurl2: {
+        type: String
+    }, 
+    Hurl3: {
+        type: String
+    }, 
+    Hurl4: {
+        type: String
+    }, 
+    Hurl5: {
+        type: String
+    },
+    lroom: {
+        type: Number
+    },
     SRoomprice: {
         type: Number,
-      //  required: true
+        //  required: true
     },
     SRoomurl: {
         type: String,
-    //    require: true
+        //    require: true
     },
     DRoomprice: {
         type: Number,
-  //      required: true
+        //      required: true
     },
     DRoomurl: {
         type: String,
-       // require: true
+        // require: true
     },
 
 
 
     SuRoomprice: {
         type: Number,
-//        required: true
+        //        required: true
     },
     SuRoomurl: {
         type: String,
-//        require: true
+        //        require: true
     }
 
-    
-     
 
-            
-        
+
+
+
+
 
 });
 

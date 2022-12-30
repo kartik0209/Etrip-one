@@ -58,15 +58,35 @@ router.post("/signin", async (req, res) => {
 
         const userlogin = await User.findOne({ email: email });
         console.log(userlogin);
+        // if(userlogin.length>0){
+        //     const currentuser={
+        //         name:userlogin[0].name
+        //     }
+        //     res.send(200).send(currentuser)
+        // }else{
+        //     res.status(400).json({
+        //         message:"not curent"
+        //     })
+        // }
+       
+
         if (userlogin) {
             const ismatch = await bcrypt.compare(password, userlogin.password);
                 
-            token=await userlogin.generateAuthToken();
-            console.log(token);
+           // token=await userlogin.generateAuthToken();
+            //console.log(token);
             if (!ismatch) {
                 res.status(422).json({ error: "user invalid password" });
             }
-            else {
+            else { 
+                const currentuser={
+                    name:userlogin.name,
+                    email:userlogin.email,
+                    id:userlogin._id1
+                }
+                res.send(currentuser)
+                console.log(currentuser) 
+                
                 res.json({ message: "user login" });
             }
         } else {
@@ -83,5 +103,10 @@ router.post("/signin", async (req, res) => {
         console.log(err);
     }
 });
+
+
+// router.get("/Ushotel",auths ,(req,res)=>{
+
+// });
 
 module.exports = router;

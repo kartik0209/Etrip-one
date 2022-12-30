@@ -1,12 +1,27 @@
 import React, { Component, useState } from 'react'
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Link, Routes, useHistory } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Anavbar from "../Admin/Anavbar";
-const Login = () => {
-  const history = useNavigate();
 
+const Login = () => {
+  
+
+    const [users, setusers] = useState([]);
+    useEffect(() => {
+        getusers();
+    }, []);
+    const getusers = async () => {
+        let result = await fetch("/users");
+        result = await result.json();
+        setusers(result);
+    }
+  const history = useNavigate();
+  const [loading, setloading] = useState(true);
+  const [error, seterror] = useState();
   const [email, setemail] = useState();
   const [password, setpassword] = useState();
+  
   const loginuser = async (e) => {
     e.preventDefault();
 
@@ -21,16 +36,26 @@ const Login = () => {
       })
     });
     const data = await res.json();
+    localStorage.setItem("currentuser",JSON.stringify(res))
+
+
+    console.log(res)
+    
     if (res.status == 422 || !data) {
       window.alert("not");
-    } else if (email=="admin1@gmail.com" && password=="admin123") {
-      //history("../Admin/Anavbar.js");
-      
-      
-    } else  {
+    } else if (email == "admin1@gmail.com" && password == "admin123") {
+      history("/Admin")
+    } else {
       window.alert("login");
-      //  history("/");
+        history(`/${uu}`);
     }
+
+    
+
+      
+  
+const uu=users[0].name;
+console.log(uu)
   }
 
 
